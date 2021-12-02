@@ -30,6 +30,8 @@ if (!require(tidyverse)) install.packages("tidyverse") else library(tidyverse)
 # actual import call to tibble
 clean_data = "GamingStudy_data.csv" %>% 
   read.csv2(sep = ",", header = T, ) %>% 
-  as_tibble
+  as_tibble %>% 
+  select(Age, Hours, SWL_T, SPIN_T, whyplay) %>% 
+  na.omit() %>% 
+  as_tibble() 
 
-# data analysis ---- 
