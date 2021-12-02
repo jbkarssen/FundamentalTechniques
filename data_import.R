@@ -27,11 +27,20 @@ if (!require(tidyverse)) install.packages("tidyverse") else library(tidyverse)
 # Gender        char      Gender
 
 # import ----
-# actual import call to tibble
+
+# actual import call 
 clean_data = "GamingStudy_data.csv" %>% 
   read.csv2(sep = ",", header = T, ) %>% 
+  # to tibble
   as_tibble %>% 
-  select(Age, Hours, SWL_T, SPIN_T, whyplay) %>% 
-  na.omit() %>% 
-  as_tibble() 
+  # select columns for research
+  dplyr::select(SWL_T, SPIN_T, Age, Hours, Degree, Game, Playstyle) %>% 
+  # clean up variables (remove text and extract singleplayer/multiplayer) & to factors (categorical)
+  mutate(
+    Game = as.factor(Game),
+    Degree = as.factor(trimws(gsub("\\(or equivalent)", "", Degree))),
+    Playstyle = as.factor(ifelse(grepl("Singleplayer", Playstyle), "Singleplayer", "Multiplayer"))
+    ) %>% 
+  # remove na
+  na.omit()
 
