@@ -1,0 +1,38 @@
+---
+title: 'Assignement 1: Linear Regression'
+author: "Bob Merkus, Tom Hartgers, Benine Karssen, Lucas Graas"
+date: "12/2/2021"
+output: html_document
+---
+
+1 Introduction
+1.1 Dataset
+1.2 Research questions
+1.3 Data exploration
+1.3.1 Bivariate Relations
+1.3.2 Variable distributions
+
+2 Simple Linear Regression
+2.1 Coefficients
+2.2 P-values
+2.3 Confidence Interval (CI)
+2.4 Model fit
+
+3 Multiple Linear Regression
+3.1 Compare models (RMSE, AIC, BIC)
+3.2 Interpret final model
+3.3 Conclusions regarding model
+3.3.1 Inference
+3.3.2 Predictions 
+
+
+```{r, warning = F}
+source("data_import.R")
+
+
+# plot game per age
+p1 = clean_data %>% 
+  ggplot() +
+  geom_boxplot(aes(x = Age, y = Game))
+p1
+```
