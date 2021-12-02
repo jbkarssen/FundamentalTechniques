@@ -1,1 +1,6 @@
 # rmarkdown
+
+```{r}
+source("data_import.R")
+```
+
