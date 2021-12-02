@@ -32,6 +32,8 @@ Hello
 ```{r, warning = F}
 source("data_import.R")
 
+ggplot(clean_data) + 
+  geom_point(aes(x = Hours, y = SPIN_T))
 
 # plot game per age
 p1 = clean_data %>% 
