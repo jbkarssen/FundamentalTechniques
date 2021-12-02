@@ -1,6 +1,7 @@
 #github test
 # setup----
 if (!require(tidyverse)) install.packages("tidyverse") else library(tidyverse)
+library(ggplot2)
 
 # The file which is loaded below still includes all variables.
 # Game titles are normalized, top 10 games ranked, rest grouped as "Other".
@@ -44,3 +45,37 @@ clean_data = "GamingStudy_data.csv" %>%
   # remove na
   na.omit()
 
+# detecting and removing outliers
+#SWL_T
+barplot_SWL_T <- ggplot(clean_data, aes(x = SWL_T)) + 
+  geom_bar(stat = "count")
+summary(clean_data$SWL_T)
+#SPIN_T
+barplot_SPIN_T <- ggplot(clean_data, aes(x = SPIN_T)) +
+  geom_bar(stat = "count") 
+summary(clean_data$SPIN_T)
+#AGE
+barplot_Age <- ggplot(clean_data, aes(x = Age)) + 
+  geom_bar(stat = "count")
+summary(clean_data$Age)
+
+#Hours
+clean_data <- clean_data[clean_data$Hours < 126,]
+summary(clean_data$Hours)
+barplot_Hours <- ggplot(clean_data, aes(x = Hours)) + 
+  geom_bar()
+
+#Degree 
+summary(clean_data$Degree)
+barplot_Degree <- ggplot(clean_data, aes(x = Degree)) + 
+  geom_bar(stat = "count")
+
+#Game 
+summary(clean_data$Game)
+barplot_Game <- ggplot(clean_data, aes(x = Game)) + 
+  geom_bar(stat = "count")
+
+#Playstyle
+summary(clean_data$Playstyle)
+barplot_Playstyle <- ggplot(clean_data, aes(x = Playstyle)) + 
+  geom_bar(stat = "count")
