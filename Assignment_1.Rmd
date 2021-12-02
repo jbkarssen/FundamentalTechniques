@@ -8,20 +8,19 @@ output: html_document
 1 Introduction
 Hello
 
-
-1.1 Dataset
+1.1 Dataset - Lucas
 1.2 Research questions
 1.3 Data exploration
 1.3.1 Bivariate Relations
 1.3.2 Variable distributions
 
-2 Simple Linear Regression
-2.1 Coefficients
-2.2 P-values
-2.3 Confidence Interval (CI)
-2.4 Model fit
+2 Simple Linear Regression 
+2.1 Coefficients - Benine
+2.2 P-values - Benine
+2.3 Confidence Interval (CI) - Tom 
+2.4 Model fit - Tom 
 
-3 Multiple Linear Regression
+3 Multiple Linear Regression - Bob
 3.1 Compare models (RMSE, AIC, BIC)
 3.2 Interpret final model
 3.3 Conclusions regarding model
