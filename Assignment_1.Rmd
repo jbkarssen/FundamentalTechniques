@@ -14,11 +14,22 @@ Hello
 1.3.1 Bivariate Relations
 1.3.2 Variable distributions
 
-2 Simple Linear Regression 
-2.1 Coefficients - Benine
-2.2 P-values - Benine
-2.3 Confidence Interval (CI) - Tom 
-2.4 Model fit - Tom 
+**2 Simple Linear Regression**  
+
+```{r}
+out1 <- lm(clean_data$SWL_T ~ clean_data$Degree, data = clean_data)
+```
+
+**2.1 Coefficients - Benine**
+**2.2 P-values - Benine**
+**2.3 Confidence Interval (CI) - Tom** 
+Compute the confidence intervals for the parameters of the model with a 95% confidence level.
+```{r}
+confint(out1)
+```
+None of the confidence intervals contain the value 0. Therefore we can be 95% sure that if we compute our analysis an infinite number of times, 95% of all confidence intervals will surround the true value of the parameters. Therefore we can reject the null hypothesis of our model. 
+
+**2.4 Model fit - Tom** 
 
 3 Multiple Linear Regression - Bob
 3.1 Compare models (RMSE, AIC, BIC)
