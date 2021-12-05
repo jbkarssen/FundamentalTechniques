@@ -5,39 +5,10 @@ date: "12/2/2021"
 output: html_document
 ---
 
-1 Introduction
-Hello
+**1 Introduction**
+In the following assignment we will explore the relation between the (academic) degree of gamers and their score on the satisfaction with life scale. After exploring the dataset, removing outliers and exploring the variable distribution and bivariate relations between the variables we will start with a simple linear regression on the aforementioned variables, after which we will statrt controlling for age and hours played through a multiple regression analysis. Through a model comparison we will subsequently decide which of our models predicts the satisfaction with life score best. 
 
-1.1 Dataset - Lucas
-1.2 Research questions
-1.3 Data exploration
-1.3.1 Bivariate Relations
-1.3.2 Variable distributions
-
-**2 Simple Linear Regression**  
-
-```{r}
-out1 <- lm(clean_data$SWL_T ~ clean_data$Degree, data = clean_data)
-```
-
-**2.1 Coefficients - Benine**
-**2.2 P-values - Benine**
-**2.3 Confidence Interval (CI) - Tom** 
-Compute the confidence intervals for the parameters of the model with a 95% confidence level.
-```{r}
-confint(out1)
-```
-None of the confidence intervals contain the value 0. Therefore we can be 95% sure that if we compute our analysis an infinite number of times, 95% of all confidence intervals will surround the true value of the parameters. Therefore we can reject the null hypothesis of our model. 
-
-**2.4 Model fit - Tom** 
-
-3 Multiple Linear Regression - Bob
-3.1 Compare models (RMSE, AIC, BIC)
-3.2 Interpret final model
-3.3 Conclusions regarding model
-3.3.1 Inference
-3.3.2 Predictions 
-
+**1.1 Dataset - Lucas**
 
 ```{r, warning = F}
 source("data_import.R")
@@ -49,3 +20,52 @@ p1 = clean_data %>%
   geom_boxplot(aes(x = Age, y = Game))
 p1
 ```
+
+**1.2 Research questions**
+**1.3 Data exploration**
+**1.3.1 Bivariate Relations**
+**1.3.2 Variable distributions**
+
+**2 Simple Linear Regression**  
+
+```{r}
+out1 <- lm(clean_data$SWL_T ~ clean_data$Degree, data = clean_data)
+```
+
+**2.1 Coefficients - Benine**
+
+
+**2.2 P-values - Benine**
+
+
+**2.3 Confidence Interval (CI) - Tom** 
+Compute the confidence intervals for the parameters of the model with a 95% confidence level.
+```{r}
+confint(out1)
+```
+None of the confidence intervals contain the value 0. Therefore we can be 95% sure that if we compute our analysis an infinite number of times, 95% of all confidence intervals will surround the true value of the parameters. As none of the intervals contain the value of 0, this is not a probable value. Therefore we can reject the null hypothesis of our model. 
+
+**2.4 Model fit - Tom** 
+For assessing the model fit we can use the R-squared statistic. 
+```{r}
+summary(out1)
+```
+The R-squared statistic shows us that our model significantly explains 1.422% of the variance in SWL_T scores, with an F-statistic of 46.06 and an associated p-value < 0.05.  
+
+**3 Multiple Linear Regression - Bob**
+
+
+**3.1 Compare models (RMSE, AIC, BIC)**
+
+
+**3.2 Interpret final model**
+
+
+**3.3 Conclusions regarding model**
+
+
+**3.3.1 Inference**
+
+
+**3.3.2 Predictions** 
+
