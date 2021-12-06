@@ -39,43 +39,10 @@ clean_data = "GamingStudy_data.csv" %>%
   # clean up variables (remove text and extract singleplayer/multiplayer) & to factors (categorical)
   mutate(
     Game = as.factor(Game),
-    Degree = as.factor(trimws(gsub("\\(or equivalent)", "", Degree))),
+    Degree = as.factor(str_trim(gsub("\\(or equivalent)", "", Degree))),
     Playstyle = as.factor(ifelse(grepl("Singleplayer", Playstyle), "Singleplayer", "Multiplayer"))
     ) %>% 
   # remove na
   na.omit()
 
-# detecting and removing outliers
-#SWL_T
-barplot_SWL_T <- ggplot(clean_data, aes(x = SWL_T)) + 
-  geom_bar(stat = "count")
-summary(clean_data$SWL_T)
-#SPIN_T
-barplot_SPIN_T <- ggplot(clean_data, aes(x = SPIN_T)) +
-  geom_bar(stat = "count") 
-summary(clean_data$SPIN_T)
-#AGE
-barplot_Age <- ggplot(clean_data, aes(x = Age)) + 
-  geom_bar(stat = "count")
-summary(clean_data$Age)
-
-#Hours
-clean_data <- clean_data[clean_data$Hours < 126,]
-summary(clean_data$Hours)
-barplot_Hours <- ggplot(clean_data, aes(x = Hours)) + 
-  geom_bar()
-
-#Degree 
-summary(clean_data$Degree)
-barplot_Degree <- ggplot(clean_data, aes(x = Degree)) + 
-  geom_bar(stat = "count")
-
-#Game 
-summary(clean_data$Game)
-barplot_Game <- ggplot(clean_data, aes(x = Game)) + 
-  geom_bar(stat = "count")
-
-#Playstyle
-summary(clean_data$Playstyle)
-barplot_Playstyle <- ggplot(clean_data, aes(x = Playstyle)) + 
-  geom_bar(stat = "count")
+  
