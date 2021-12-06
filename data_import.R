@@ -1,8 +1,11 @@
 #github test
 # setup----
-if (!require(tidyverse)) install.packages("tidyverse") else library(tidyverse)
-library(ggplot2)
-library(magrittr)
+suppressPackageStartupMessages({
+  if (!require(tidyverse)) install.packages("tidyverse") 
+  library(tidyverse)
+  library(ggplot2)
+  library(magrittr)
+})
 
 # The file which is loaded below still includes all variables.
 # Game titles are normalized, top 10 games ranked, rest grouped as "Other".
