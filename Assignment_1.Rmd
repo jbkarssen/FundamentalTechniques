@@ -1,7 +1,7 @@
 ---
 title: 'Assignement 1: Linear Regression'
 author: "Bob Merkus, Tom Hartgers, Benine Karssen, Lucas Graas"
-date: "12/2/2021"
+date: ""
 output: html_document
 ---
 
@@ -9,10 +9,10 @@ output: html_document
 source("data_import.R")
 ```
 
-**1 Introduction**
-In the following assignment we will explore the relation between the (academic) degree of gamers and their score on the satisfaction with life scale. After exploring the dataset, removing outliers and exploring the variable distribution and bivariate relations between the variables we will start with a simple linear regression on the aforementioned variables, after which we will statrt controlling for age and hours played through a multiple regression analysis. Through a model comparison we will subsequently decide which of our models predicts the satisfaction with life score best. 
+# **1 Introduction**
+In the following assignment we will explore the relation between the (academic) degree of gamers and their score on the satisfaction with life scale. After exploring the dataset, removing outliers and exploring the variable distribution and bivariate relations between the variables we will start with a simple linear regression on the aforementioned variables, after which we will start controlling for age and hours played through a multiple regression analysis. Through a model comparison we will subsequently decide which of our models predicts the satisfaction of life score best. 
 
-**1.1 Dataset - Lucas**
+## **1.1 Dataset - Lucas**
 Detection and removal of outliers per variable
 ```{r, warning = F}
 
@@ -91,12 +91,12 @@ clean_data %>%
 ```
 We can see that all dummy variables have a minimum value of 0 and a maximum value of 1, showing we succesfully added the dummy variables.
 
-**1.2 Research questions**
-**1.3 Data exploration**
-**1.3.1 Bivariate Relations**
-**1.3.2 Variable distributions**
+## **1.2 Research questions**
+## **1.3 Data exploration**
+### **1.3.1 Bivariate Relations**
+### **1.3.2 Variable distributions**
 
-**2 Simple Linear Regression**  
+# **2 Simple Linear Regression**  
 
 ```{r}
 out1 <- clean_data %$% 
@@ -104,64 +104,124 @@ out1 <- clean_data %$%
      data = clean_data)
 ```
 
-**2.1 Coefficients - Benine**
+## **2.1 Coefficients - Benine**
 
 
-**2.2 P-values - Benine**
+## **2.2 P-values - Benine**
 
 
-**2.3 Confidence Interval (CI) - Tom** 
+## **2.3 Confidence Interval (CI) - Tom** 
 Compute the confidence intervals for the parameters of the model with a 95% confidence level.
 ```{r}
 confint(out1)
 ```
 Our confidence level is 95%. Therefore we can be 95% sure that if we compute our analysis an infinite number of times, 95% of all confidence intervals will surround the true value of the parameters. The intercept in our confidence intervals represents the high school degree gamers. All other intervals represent the difference between the high school degree gamers, and the respective other gamers. Only the confidence interval of the Degree.None gamers passes zero. Therefore we can reject the null hypothesis of for all of the above mentioned dummy variables, except for the Degree.None gamers. 
 
-**2.4 Model fit - Tom** 
+## **2.4 Model fit - Tom** 
 For assessing the model fit we can use the R-squared statistic. 
 ```{r}
 summary(out1)
 ```
 The R-squared statistic shows us that our model significantly explains 1.39% of the variance in SWL_T scores, with an F-statistic of 45.08 and an associated p-value < 0.05.  
 
-**3 Multiple Linear Regression - Bob**
+# **3 Multiple Linear Regression - Bob**
 ```{r}
+models = list(
+  #Simple linear model from paragraph 2
+  simple_lm = out1, 
+  
+  # Mutiple linear model including Degree (dummy) & SPIN_T
+  multiple_lm1 = lm(data = clean_data, formula = clean_data$SWL_T ~ clean_data$Degree.Bachelor + clean_data$Degree.Master + clean_data$Degree.None + clean_data$Degree.PhD + clean_data$SPIN_T), 
+  
+  # Mutiple linear model including Degree (dummy), SPIN_T, Age, Hours & Playstyle (dummy)
+  multiple_lm2 = lm(data = clean_data, formula = clean_data$SWL_T ~ clean_data$Degree.Bachelor + clean_data$Degree.Master + clean_data$Degree.None + clean_data$Degree.PhD + clean_data$SPIN_T + clean_data$Age + clean_data$Hours + clean_data$Playstyle.Singleplayer),  
+  
+  # Mutiple linear model including SPINT_T, Age, Hours & Playstyle (dummy)
+  multiple_lm3 = lm(data = clean_data, formula = clean_data$SWL_T ~ clean_data$SPIN_T  + clean_data$Age + clean_data$Hours + clean_data$Playstyle.Singleplayer), 
+  
+  # Mutiple linear model including Game (dummy)
+  multiple_lm4 = lm(data = clean_data, formula = clean_data$SWL_T ~ clean_data$Game.CS + clean_data$Game.Destiny + clean_data$Game.Diablo + clean_data$Game.GW + clean_data$Game.Hearthstone + clean_data$Game.HOTS + clean_data$Game.Skyrim + clean_data$Game.Starcraft + clean_data$Game.WoW + clean_data$Game.Other), 
+  
+  # Mutiple linear model including Game (dummy), Degree (dummy), SPIN_T, Age, Hours & Playstyle (dummy)
+  multiple_lm5 = lm(data = clean_data, formula = clean_data$SWL_T ~ clean_data$Game.CS + clean_data$Game.Destiny + clean_data$Game.Diablo + clean_data$Game.GW + clean_data$Game.Hearthstone + clean_data$Game.HOTS + clean_data$Game.Skyrim + clean_data$Game.Starcraft + clean_data$Game.WoW + clean_data$Game.Other + clean_data$Degree.Bachelor + clean_data$Degree.Master + clean_data$Degree.None + clean_data$Degree.PhD + clean_data$SPIN_T + clean_data$Age + clean_data$Hours + clean_data$Playstyle.Singleplayer)
+  
+)
 
-out2 <- lm(data = clean_data, formula = clean_data$SWL_T ~ clean_data$Degree.Bachelor + clean_data$Degree.Master + clean_data$Degree.None + clean_data$Degree.PhD)
+# model desciptions
+models_description = c(
+  simple_lm = "Degree",
+  multiple_lm1 = "Degree, SPIN_T, Age, Hours & Playstyle",
+  multiple_lm2 = "Degree, SPIN_T",
+  multiple_lm3 = "SPINT_T, Age, Hours & Playstyle",
+  multiple_lm4 = "Game",
+  multiple_lm5 = "Game, Degree, SPIN_T, Age, Hours & Playstyle"
+)
+```
+
+We have declared different Multiple Linear Regression models for comparison. 
+Multiple Linear Models:
+
+* Including `r models_description[2]`
+* Including `r models_description[3]`
+* Including `r models_description[4]`
+* Including `r models_description[5]`
+* Including `r models_description[6]`
+
+## **3.1 Compare models (RMSE, AIC, BIC)**
+Metrics such as the RMSE, AIC & BIC are calculated to decide which model to choose for further analysis.
+```{r}
+# Root Mean Square Error (RMSE) calculation function for a single linear model
+RMSE <- function(linear_model) {
+  RSS <- c(crossprod(linear_model$residuals))
+  MSE <- RSS / length(linear_model$residuals)
+  sqrt(MSE)
+}
+
+# calculate metrics per model and store in tibble
+model_comparison = tibble(
+  Model = models_description,
+  RMSE = sapply(models, RMSE),
+  AIC = sapply(models, AIC),
+  BIC = sapply(models, BIC)
+)
+
+model_comparison
+
+# model selection
+model_comparison %>% 
+  ggplot() +
+  geom_bar(aes(x = RMSE, y = Model), stat = "identity") + 
+  coord_cartesian(xlim = c(5, 7.5))
+model_comparison %>% 
+  ggplot() + 
+  geom_bar(aes(x = AIC, y = Model), stat = "identity") + 
+  coord_cartesian(xlim = c(82e3, 87e3))
+model_comparison %>% 
+  ggplot() + 
+  geom_bar(aes(x = BIC, y = Model), stat = "identity") + 
+  coord_cartesian(xlim = c(82e3, 87e3))
+
+```
+
+## **3.2 Interpret final model**
+```{r}
 
 ```
 
 
-**3.1 Compare models (RMSE, AIC, BIC)**
-```{r}
-
-# out2 %>% AIC
-# out2 %>% BIC
-
-
-```
-
-
-**3.2 Interpret final model**
+## **3.3 Conclusions regarding model**
 ```{r}
 
 ```
 
 
-**3.3 Conclusions regarding model**
+### **3.3.1 Inference**
 ```{r}
 
 ```
 
 
-**3.3.1 Inference**
-```{r}
-
-```
-
-
-**3.3.2 Predictions** 
+### **3.3.2 Predictions** 
 ```{r}
 # out2 %>% predict
 ```
-
