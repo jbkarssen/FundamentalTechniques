@@ -99,7 +99,9 @@ We can see that all dummy variables have a minimum value of 0 and a maximum valu
 **2 Simple Linear Regression**  
 
 ```{r}
-out1 <- lm(clean_data$SWL_T ~ clean_data$Degree, data = clean_data)
+out1 <- clean_data %$% 
+  lm(SWL_T ~ Degree.Bachelor + Degree.Master + Degree.None + Degree.PhD, 
+     data = clean_data)
 ```
 
 **2.1 Coefficients - Benine**
@@ -113,14 +115,14 @@ Compute the confidence intervals for the parameters of the model with a 95% conf
 ```{r}
 confint(out1)
 ```
-None of the confidence intervals contain the value 0. Therefore we can be 95% sure that if we compute our analysis an infinite number of times, 95% of all confidence intervals will surround the true value of the parameters. As none of the intervals contain the value of 0, this is not a probable value. Therefore we can reject the null hypothesis of our model. 
+Our confidence level is 95%. Therefore we can be 95% sure that if we compute our analysis an infinite number of times, 95% of all confidence intervals will surround the true value of the parameters. The intercept in our confidence intervals represents the high school degree gamers. All other intervals represent the difference between the high school degree gamers, and the respective other gamers. Only the confidence interval of the Degree.None gamers passes zero. Therefore we can reject the null hypothesis of for all of the above mentioned dummy variables, except for the Degree.None gamers. 
 
 **2.4 Model fit - Tom** 
 For assessing the model fit we can use the R-squared statistic. 
 ```{r}
 summary(out1)
 ```
-The R-squared statistic shows us that our model significantly explains 1.422% of the variance in SWL_T scores, with an F-statistic of 46.06 and an associated p-value < 0.05.  
+The R-squared statistic shows us that our model significantly explains 1.39% of the variance in SWL_T scores, with an F-statistic of 45.08 and an associated p-value < 0.05.  
 
 **3 Multiple Linear Regression - Bob**
 ```{r}
