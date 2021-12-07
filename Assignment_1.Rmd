@@ -15,7 +15,7 @@ In the following assignment we will explore the relation between the (academic) 
 ## **1.1 Dataset - Lucas**
 Detection and removal of outliers per variable
 ```{r, warning = F}
-
+clean_data2 <- clean_data
   # Detecting and removing outliers with frequency plots
 #SWL_T
 barplot_SWL_T <- ggplot(clean_data, aes(x = SWL_T)) + 
@@ -94,6 +94,24 @@ We can see that all dummy variables have a minimum value of 0 and a maximum valu
 ## **1.2 Research questions**
 ## **1.3 Data exploration**
 ### **1.3.1 Bivariate Relations**
+
+With the help of dummy variables we can produce a plot with correlation between variables. Schrijf ik nog verder af 
+```{r}
+library("dplyr")
+x1 <- select(clean_data, "SWL_T", "SPIN_T", "Age", "Hours", "Degree.Bachelor", "Degree.Master", "Degree.None", "Degree.PhD", "Game.CS", "Game.Destiny", "Game.Diablo", "Game.GW", "Game.Hearthstone", "Game.HOTS", "Game.Skyrim", "Game.Starcraft", "Game.WoW", "Game.Other", "Playstyle.Singleplayer") 
+y1 <- select(clean_data, "SWL_T", "SPIN_T")
+pearsonmatrix <- cor(x = x1, y = y1)
+#pearsonmatrix
+
+
+install.packages("corrplot") # Deze hoeft natuurlijk maar 1 keer gebruikt te worden 
+library("corrplot") 
+Correlationplot <- corrplot(pearsonmatrix, method = 'circle')
+
+```
+
+
+
 ### **1.3.2 Variable distributions**
 
 # **2 Simple Linear Regression**  
