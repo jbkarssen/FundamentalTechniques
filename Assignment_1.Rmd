@@ -12,7 +12,32 @@ source("data_import.R")
 # **1 Introduction**
 In the following assignment we will explore the relation between the (academic) degree of gamers and their score on the satisfaction with life scale. After exploring the dataset, removing outliers and exploring the variable distribution and bivariate relations between the variables we will start with a simple linear regression on the aforementioned variables, after which we will start controlling for age and hours played through a multiple regression analysis. Through a model comparison we will subsequently decide which of our models predicts the satisfaction of life score best. 
 
-## **1.1 Dataset - Lucas**
+## **1.1 Research questions**
+
+In this report we aim to answer the following research questions: 
+
+ * Does having a degree as a gamer influence the score on 'satisfaction of life' scale (SWL_T)? 
+ * Does the number of hours played per week predict social anxiety (SPIN_T)? 
+
+## **1.2 Dataset - Lucas**
+### **1.2.1 Data exploration**
+The data that is used in this project is a selection of the original dataset^1^. The selections contains the variables: 
+
+Variable      | Type 
+------------- | ------------- 
+SWL_T         | Continuous         
+SPIN_T        | Continuous
+Age           | Continuous
+Hours         | Continuous
+Degree        | Categorical 
+Game          | Categorical 
+
+The dataset contains 12786 observations of adult gamers. 
+
+
+^1^ [Sauter, M., & Draschkow, D. (2017). Are Gamers Sad and Isolated? A database about the Anxiety, Life Satisfaction and Social Phobia of over 13000 participants.](https://psyarxiv.com/mfajz/)
+
+### **1.2.2 Variable distributions**
 Detection and removal of outliers per variable
 ```{r, warning = F}
 clean_data2 <- clean_data
@@ -36,7 +61,6 @@ barplot_Age
 summary(clean_data$Age)
 
 #Hours
-clean_data <- clean_data[clean_data$Hours < 126,]
 barplot_Hours <- ggplot(clean_data, aes(x = Hours)) + 
   geom_bar()
 summary(clean_data$Hours)
@@ -91,28 +115,46 @@ clean_data %>%
 ```
 We can see that all dummy variables have a minimum value of 0 and a maximum value of 1, showing we succesfully added the dummy variables.
 
-## **1.2 Research questions**
-## **1.3 Data exploration**
-### **1.3.1 Bivariate Relations**
 
-With the help of dummy variables we can produce a plot with correlation between variables. Schrijf ik nog verder af 
+### **1.2.3 Removal of outliers** 
+As can be seen in 1.2.2 the only variable that has observations that do not match the respective distribution is the 'Hours' variable. It contains for example the two values '420' and '8000'. Both are impossible as there are only 168 hours in a week. 
+
+We choose to interpret values above 18 hours per day as very unlikely, and the following chunk will remove observations above 126 hours per week and plots the distribution again. 
+
 ```{r}
-library("dplyr")
-x1 <- select(clean_data, "SWL_T", "SPIN_T", "Age", "Hours", "Degree.Bachelor", "Degree.Master", "Degree.None", "Degree.PhD", "Game.CS", "Game.Destiny", "Game.Diablo", "Game.GW", "Game.Hearthstone", "Game.HOTS", "Game.Skyrim", "Game.Starcraft", "Game.WoW", "Game.Other", "Playstyle.Singleplayer") 
-y1 <- select(clean_data, "SWL_T", "SPIN_T")
-pearsonmatrix <- cor(x = x1, y = y1)
-#pearsonmatrix
-
-
-install.packages("corrplot") # Deze hoeft natuurlijk maar 1 keer gebruikt te worden 
-library("corrplot") 
-Correlationplot <- corrplot(pearsonmatrix, method = 'circle')
+clean_data <- clean_data[clean_data$Hours < 126,]
+barplot_Hours <- ggplot(clean_data, aes(x = Hours)) + 
+  geom_bar()
+summary(clean_data$Hours)
+barplot_Hours
 
 ```
 
 
+### **1.3 Bivariate Relations**
 
-### **1.3.2 Variable distributions**
+
+```{r}
+library("dplyr")
+x1 <- select(clean_data, "SWL_T", "SPIN_T", "Age", "Hours", "Degree.Bachelor", "Degree.Master", "Degree.None", "Degree.PhD", "Game.CS", "Game.Destiny", "Game.Diablo", "Game.GW", "Game.Hearthstone", "Game.HOTS", "Game.Skyrim", "Game.Starcraft", "Game.WoW", "Game.Other", "Playstyle.Singleplayer") 
+y1 <- select(clean_data, "SWL_T", "SPIN_T", "Age", "Hours")
+
+x2 <- select(clean_data, "Degree.Bachelor", "Degree.Master", "Degree.None", "Degree.PhD", "Game.CS", "Game.Destiny", "Game.Diablo", "Game.GW", "Game.Hearthstone", "Game.HOTS", "Game.Skyrim", "Game.Starcraft", "Game.WoW", "Game.Other", "Playstyle.Singleplayer") 
+y2 <- select(clean_data, "SWL_T", "SPIN_T", "Age", "Hours")
+pearsonmatrix <- cor(x = x1, y = y1)
+spearmanmatrix <- cor(x = x2, y = y2, method = "spearman")
+
+
+
+#install.packages("corrplot") # Deze hoeft natuurlijk maar 1 keer gebruikt te worden 
+library("corrplot") 
+pearson_corrplot <- corrplot(pearsonmatrix, method = 'circle')
+#spearman_corrplot <- corrplot(spearmanmatrix, method = 'circle')
+
+```
+
+The plot above shows the correlations based on the pearson method. A bigger chunk corresponds with a stronger correlation; blue and red for a positive and negative correlation, respectively. On first sight the SPIN_T and SWL_T seem to correlate very strong. Also the obvious correlation between age and degree stands out. It seems there is almost no correlation between games and other variables. 
+
 
 # **2 Simple Linear Regression**  
 
