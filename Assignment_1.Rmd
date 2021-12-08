@@ -29,8 +29,8 @@ SWL_T         | Continuous
 SPIN_T        | Continuous
 Age           | Continuous
 Hours         | Continuous
-Degree        | Categorical 
-Game          | Categorical 
+Degree        | Categorical (5 categories)
+Game          | Categorical (11 categories)
 
 The dataset contains 12786 observations of adult gamers. 
 
