@@ -34,8 +34,12 @@ suppressPackageStartupMessages({
 # import ----
 
 # actual import call 
-clean_data = "GamingStudy_data.csv" %>% 
-  read.csv2(sep = ",", header = T, ) %>% 
+raw_data = "GamingStudy_data.csv" %>% 
+  read.csv2(sep = ",", header = T, ) 
+Encoding(raw_data$Degree) <- "UTF-8"
+raw_data$Degree <- iconv(raw_data$Degree, "UTF-8", "UTF-8",sub='') ## replace any non UTF-8 by ''
+
+clean_data <- raw_data %>% 
   # to tibble
   as_tibble %>% 
   # select columns for research
@@ -49,4 +53,4 @@ clean_data = "GamingStudy_data.csv" %>%
   # remove na
   na.omit()
 
-  
+rm(raw_data)
